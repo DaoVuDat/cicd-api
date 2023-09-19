@@ -102,7 +102,7 @@ jobs:
           service_account: "104524452350924604483"
       - name: Deploy App
         id: deploy
-        uses: google-github-actions/deploy-appengine@main
+        uses: google-github-actions/deploy-appengine@v1
         with:
           credentials: ${{ secrets.gcp_credentials }}
       - id: test
