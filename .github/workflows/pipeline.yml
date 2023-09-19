@@ -24,8 +24,8 @@ jobs:
         run: make report
       - name: Copy files
         run: |
-          mkdir  reports
-          cp cover.html reports/.
+          mkdir reports
+          cp cover.html ./reports
       - name: Archive
         uses: actions/upload-artifact@v3
         with:
@@ -50,7 +50,7 @@ jobs:
       - name: Copy Files
         run: |
           mkdir artifacts
-          cp api artifacts/.
+          cp api ./artifacts
 
       - name: Archive
         uses: actions/upload-artifact@v3
@@ -84,3 +84,28 @@ jobs:
           draft: true
           prerelease: true
           files: api
+
+  deploy-function:
+    name: Deploy FaaS
+    runs-on: ubuntu-22.04
+    needs: test
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    steps:
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Authentication GCP
+        id: 'auth'
+        uses: google-github-actions/auth@v1
+        with:
+         credentials_json: ${{ secrets.gcp_credentials }}
+      - name: Deploy function
+        id: deploy
+        uses: google-github-actions/deploy-cloud-functions@v1
+        with:
+          name: translate
+          entry_point: Translate
+          runtime: go121
+      - id: test
+        run: curl "${{ steps.deploy.outputs.url }}/hello"
