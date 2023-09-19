@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/DaoVuDat/cicd-api/handlers"
 	"github.com/DaoVuDat/cicd-api/handlers/rest"
 	"log"
 	"net/http"
@@ -13,6 +14,7 @@ func main() {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/hello", rest.TranslateHandler)
+	mux.HandleFunc("/healthcheck", handlers.HealthCheck)
 
 	log.Printf("listening on %s\n", addr)
 
