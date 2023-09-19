@@ -100,7 +100,7 @@ jobs:
         uses: google-github-actions/auth@v1
         with:
          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
-         service_account: hello-api@fluted-mercury-399512.iam.gserviceaccount.com
+         service_account: "104524452350924604483"
       - name: Deploy function
         id: deploy
         uses: google-github-actions/deploy-cloud-functions@v1
